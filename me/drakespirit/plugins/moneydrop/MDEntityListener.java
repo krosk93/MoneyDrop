@@ -11,6 +11,8 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Ghast;
+import org.bukkit.entity.Giant;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
@@ -28,7 +30,7 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
-import com.nijikokun.register.payment.Methods;
+import com.nijikokun.register.payment.md.Methods;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -153,6 +155,16 @@ public class MDEntityListener extends EntityListener {
 				mobDrop(event, Settings.getGhastDropMin(), Settings.getGhastDropMax());
 			}
 		}
+		else if(event.getEntity() instanceof Giant) {
+			if(Math.random() < Settings.getGiantDropFreq()) {
+				mobDrop(event, Settings.getGiantDropMin(), Settings.getGiantDropMax());
+			}
+		}
+		else if(event.getEntity() instanceof HumanEntity) {
+			if(Math.random() < Settings.getHumanDropFreq()) {
+				mobDrop(event, Settings.getHumanDropMin(), Settings.getHumanDropMax());
+			}
+		}
 		else if(event.getEntity() instanceof Pig) {
 			if(Math.random() < Settings.getPigDropFreq()) {
 				mobDrop(event, Settings.getPigDropMin(), Settings.getPigDropMax());
@@ -271,7 +283,12 @@ public class MDEntityListener extends EntityListener {
 		if(amount <= 0) {
 			return;
 		}
-		int stack = Material.getMaterial(Settings.getMaterialID()).getMaxStackSize();
+		Material mat = Material.getMaterial(Settings.getMaterialID());
+		if(mat == null) {
+			System.err.println("[MoneyDrop] Material not found, please check your Dropped-Material-ID setting.");
+			return;
+		}
+		int stack = mat.getMaxStackSize();
 		int loops = amount / stack;
 		if(amount % stack != 0) {
 			loops++;
@@ -291,7 +308,12 @@ public class MDEntityListener extends EntityListener {
 		if(amount <= 0) {
 			return;
 		}
-		int stack = Material.getMaterial(Settings.getMaterialID()).getMaxStackSize();
+		Material mat = Material.getMaterial(Settings.getMaterialID());
+		if(mat == null) {
+			System.err.println("[MoneyDrop] Material not found, please check your Dropped-Material-ID setting.");
+			return;
+		}
+		int stack = mat.getMaxStackSize();
 		int loops = amount / stack;
 		if(amount % stack != 0) {
 			loops++;

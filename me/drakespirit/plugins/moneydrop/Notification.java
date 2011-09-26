@@ -21,19 +21,29 @@ public class Notification implements Runnable {
 
 	@Override
 	public void run() {
+		String money = String.valueOf(monnies);
+		int s = money.indexOf('.');
+		if(money.length() > s + 3) {
+			money = money.substring(0, s + 2);
+		}
 		if(Settings.isSpoutEnabled()) {
 			if(Settings.isSpoutNoteEnabled()) {
 				if(player.getServer().getPluginManager().isPluginEnabled("Spout")) {
 					if(SpoutManager.getPlayer(player).isSpoutCraftEnabled()) {
-						String title = Settings.getSpoutNoteTitle().replaceAll("<money>", String.valueOf(monnies));
-						String message = Settings.getSpoutNoteMessage().replaceAll("<money>", String.valueOf(monnies));
-						SpoutManager.getPlayer(player).sendNotification(title, message, Material.getMaterial(Settings.getMaterialID()));
+						String title = Settings.getSpoutNoteTitle().replaceAll("<money>", money);
+						String message = Settings.getSpoutNoteMessage().replaceAll("<money>", money);
+						try {
+							SpoutManager.getPlayer(player).sendNotification(title, message, Material.getMaterial(Settings.getMaterialID()));
+						}
+						catch (UnsupportedOperationException e) {
+							System.err.println(e.getMessage());
+						}
 					}
 				}
 			}
 		}
 		if(Settings.isChatNoteEnabled()) {
-			String message = Settings.getChatNote().replaceAll("<money>", String.valueOf(monnies));
+			String message = Settings.getChatNote().replaceAll("<money>", money);
 			player.sendMessage(ChatColor.GOLD + message);
 		}
 		MDPlayerListener.notemap.remove(player.getName());

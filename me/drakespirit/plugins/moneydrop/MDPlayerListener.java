@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.getspout.spoutapi.SpoutManager;
 
-import com.nijikokun.register.payment.Methods;
+import com.nijikokun.register.payment.md.Methods;
 
 public class MDPlayerListener extends PlayerListener {
 	

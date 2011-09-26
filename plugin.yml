@@ -2,5 +2,5 @@ author: DrakeSpirit
 database: false
 main: me.drakespirit.plugins.moneydrop.MoneyDrop
 name: MoneyDrop
-startup: postworld
-version: '1.3'
+load: POSTWORLD
+version: '1.3.2'

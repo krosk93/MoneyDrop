@@ -1,11 +1,11 @@
-package com.nijikokun.register.payment.methods;
+package com.nijikokun.register.payment.md.methods;
 
 import com.iCo6.iConomy;
 import com.iCo6.system.Account;
 import com.iCo6.system.Accounts;
 import com.iCo6.system.Holdings;
 
-import com.nijikokun.register.payment.Method;
+import com.nijikokun.register.payment.md.Method;
 
 import org.bukkit.plugin.Plugin;
 

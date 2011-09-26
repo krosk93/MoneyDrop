@@ -1,4 +1,4 @@
-package com.nijikokun.register.payment;
+package com.nijikokun.register.payment.md;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -63,13 +63,13 @@ public class Methods {
      * @see #Methods(java.lang.String)
      */
     private void _init() {
-        this.addMethod("iConomy", new com.nijikokun.register.payment.methods.iCo6());
-        this.addMethod("iConomy", new com.nijikokun.register.payment.methods.iCo5());
-        this.addMethod("iConomy", new com.nijikokun.register.payment.methods.iCo4());
-        this.addMethod("BOSEconomy", new com.nijikokun.register.payment.methods.BOSE6());
-        this.addMethod("BOSEconomy", new com.nijikokun.register.payment.methods.BOSE7());
-        this.addMethod("Essentials", new com.nijikokun.register.payment.methods.EE17());
-        this.addMethod("MultiCurrency", new com.nijikokun.register.payment.methods.MCUR());
+        this.addMethod("iConomy", new com.nijikokun.register.payment.md.methods.iCo6());
+        this.addMethod("iConomy", new com.nijikokun.register.payment.md.methods.iCo5());
+        this.addMethod("iConomy", new com.nijikokun.register.payment.md.methods.iCo4());
+        this.addMethod("BOSEconomy", new com.nijikokun.register.payment.md.methods.BOSE6());
+        this.addMethod("BOSEconomy", new com.nijikokun.register.payment.md.methods.BOSE7());
+        this.addMethod("Essentials", new com.nijikokun.register.payment.md.methods.EE17());
+        this.addMethod("MultiCurrency", new com.nijikokun.register.payment.md.methods.MCUR());
     }
 
     /**

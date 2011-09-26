@@ -12,11 +12,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.config.Configuration;
 
-import com.nijikokun.register.payment.Methods;
+import com.nijikokun.register.payment.md.Methods;
 
 public class Settings {
 	
-	private static Methods methods;
+	private static Methods methods = null;
 	
 	private static boolean spawnerDropsAllowed = true;
 	private static ArrayList<Entity> spawnerBlacklist = new ArrayList<Entity>();
@@ -51,6 +51,12 @@ public class Settings {
 	private static int ghastDropMin;
 	private static int ghastDropMax;
 	private static double ghastDropFreq;
+	private static int giantDropMin;
+	private static int giantDropMax;
+	private static double giantDropFreq;
+	private static int humanDropMin;
+	private static int humanDropMax;
+	private static double humanDropFreq;
 	private static int pigDropMin;
 	private static int pigDropMax;
 	private static double pigDropFreq;
@@ -170,6 +176,14 @@ public class Settings {
 		ghastDropMax = config.getInt("Mobs.Ghast.Dropped-Maximum", 0);
 		ghastDropFreq = config.getDouble("Mobs.Ghast.Dropped-Frequency", 0);
 		
+		giantDropMin = config.getInt("Mobs.Giant.Dropped-Minimum", 0);
+		giantDropMax = config.getInt("Mobs.Giant.Dropped-Maximum", 0);
+		giantDropFreq = config.getDouble("Mobs.Giant.Dropped-Frequency", 0);
+		
+		humanDropMin = config.getInt("Mobs.Human.Dropped-Minimum", 0);
+		humanDropMax = config.getInt("Mobs.Human.Dropped-Maximum", 0);
+		humanDropFreq = config.getDouble("Mobs.Human.Dropped-Frequency", 0);
+		
 		pigDropMin = config.getInt("Mobs.Pig.Dropped-Minimum", 0);
 		pigDropMax = config.getInt("Mobs.Pig.Dropped-Maximum", 0);
 		pigDropFreq = config.getDouble("Mobs.Pig.Dropped-Frequency", 0);
@@ -228,18 +242,72 @@ public class Settings {
 	}
 
 	public static Methods getMethods() {
+		if(methods == null) {
+			methods = new Methods();
+		}
 		return methods;
 	}
 	
 	public static void createMethods(String preferredEconomy) {
 		if(methods == null) {
-			if(preferredEconomy == null || preferredEconomy.equals("")) {
+			if(preferredEconomy == null) {
+				methods = new Methods();
+			}
+			else if(preferredEconomy.equals("")) {
 				methods = new Methods();
 			}
 			else {
 				methods = new Methods(preferredEconomy);
 			}
 		}
+	}
+
+	public static int getGiantDropMin() {
+		return giantDropMin;
+	}
+
+	public static void setGiantDropMin(int giantDropMin) {
+		Settings.giantDropMin = giantDropMin;
+	}
+
+	public static int getGiantDropMax() {
+		return giantDropMax;
+	}
+
+	public static void setGiantDropMax(int giantDropMax) {
+		Settings.giantDropMax = giantDropMax;
+	}
+
+	public static double getGiantDropFreq() {
+		return giantDropFreq;
+	}
+
+	public static void setGiantDropFreq(double giantDropFreq) {
+		Settings.giantDropFreq = giantDropFreq;
+	}
+
+	public static int getHumanDropMin() {
+		return humanDropMin;
+	}
+
+	public static void setHumanDropMin(int humanDropMin) {
+		Settings.humanDropMin = humanDropMin;
+	}
+
+	public static int getHumanDropMax() {
+		return humanDropMax;
+	}
+
+	public static void setHumanDropMax(int humanDropMax) {
+		Settings.humanDropMax = humanDropMax;
+	}
+
+	public static double getHumanDropFreq() {
+		return humanDropFreq;
+	}
+
+	public static void setHumanDropFreq(double humanDropFreq) {
+		Settings.humanDropFreq = humanDropFreq;
 	}
 
 	public static String getSpoutNoteTitle() {

@@ -1,9 +1,9 @@
-package com.nijikokun.register.payment.methods;
+package com.nijikokun.register.payment.md.methods;
 
 import com.nijiko.coelho.iConomy.iConomy;
 import com.nijiko.coelho.iConomy.system.Account;
 
-import com.nijikokun.register.payment.Method;
+import com.nijikokun.register.payment.md.Method;
 
 import org.bukkit.plugin.Plugin;
 
