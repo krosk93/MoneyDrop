@@ -7,7 +7,8 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.getspout.spoutapi.SpoutManager;
 
-import com.nijikokun.register.payment.md.Methods;
+import com.nijikokun.register.payment.Method;
+import com.nijikokun.register.payment.Method.MethodAccount;
 
 public class MDPlayerListener extends PlayerListener {
 	
@@ -22,17 +23,15 @@ public class MDPlayerListener extends PlayerListener {
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		if(! event.isCancelled()) {
 			if(event.getItem().getItemStack().getDurability() == 9001) {
-				Methods m = Settings.getMethods();
-				if(m.hasMethod()) {
-					if(m.getMethod().hasAccount(event.getPlayer().getName())) {
+				Method m = Settings.getMethod();
+					if(m.hasAccount(event.getPlayer().getName())) {
 						double a = (event.getItem().getItemStack().getAmount() * Settings.getDropValue());
 						a = (double)(((int)(a * 1000))*0.001);
-						m.getMethod().getAccount(event.getPlayer().getName()).add(a);
+						m.getAccount(event.getPlayer().getName()).add(a);
 						event.getItem().remove();
 						spoutSound(event.getPlayer());
 						addNotification(event.getPlayer(), a);
 					}
-				}
 				event.setCancelled(true);
 			}
 		}

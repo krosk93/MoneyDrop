@@ -13,7 +13,6 @@ public class MoneyDrop extends JavaPlugin {
 	
 	private MDEntityListener el;
 	private MDPlayerListener pl;
-	private MDServerListener sl;
 	
 
 	@Override
@@ -23,19 +22,15 @@ public class MoneyDrop extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		Settings.initConfig(getConfiguration());
-		Settings.createMethods(Settings.getPreferredEcon());
-		
 		PluginManager pm = getServer().getPluginManager();
 		el = new MDEntityListener(pm);
 		pl = new MDPlayerListener(this);
-		sl = new MDServerListener();
 		
 		pm.registerEvent(Type.PLAYER_PICKUP_ITEM, pl, Priority.Normal, this);
 		pm.registerEvent(Type.ENTITY_DEATH, el, Priority.Normal, this);
-		pm.registerEvent(Type.CREATURE_SPAWN, el, Priority.Normal, this);
-		pm.registerEvent(Type.PLUGIN_DISABLE, sl, Priority.Monitor, this);
-		pm.registerEvent(Type.PLUGIN_ENABLE, sl, Priority.Monitor, this);
+		
+		Settings.initConfig(getConfiguration());
+		
 		
 		System.out.println("MoneyDrop is up and running!");
 	}
@@ -44,12 +39,7 @@ public class MoneyDrop extends JavaPlugin {
 		if(amount <= 0) {
 			return null;
 		}
-		Material mat = Material.getMaterial(getConfiguration().getInt("Dropped Material ID", 266));
-		if(mat == null) {
-			System.err.println("[MoneyDrop] Material not found, please check your Dropped-Material-ID setting.");
-			return null;
-		}
-		int stack = mat.getMaxStackSize();
+		int stack = Material.getMaterial(getConfiguration().getInt("Dropped Material ID", 266)).getMaxStackSize();
 		int loops = amount / stack;
 		if(amount % stack != 0) {
 			loops++;

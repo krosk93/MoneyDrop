@@ -12,10 +12,11 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
@@ -25,12 +26,15 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
-import com.nijikokun.register.payment.md.Methods;
+import com.nijikokun.register.payment.Method;
+import com.nijikokun.register.payment.Method.MethodAccount;
+
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -89,11 +93,10 @@ public class MDEntityListener extends EntityListener {
 			if(dropAmount == 0) {
 				return;
 			}
-			Methods m = Settings.getMethods();
-			if(m.hasMethod()) {
-				if(m.getMethod().hasAccount(p.getName())) {
+			Method m = Settings.getMethod();
+				if(m.hasAccount(p.getName())) {
 					double amount = 0;
-					double balance = m.getMethod().getAccount(p.getName()).balance();
+					double balance = m.getAccount(p.getName()).balance();
 					if(dropAmount > 0) {
 						if(Settings.isPlayerPercent(index)) {
 							amount = (balance * dropAmount * 0.01);
@@ -107,12 +110,12 @@ public class MDEntityListener extends EntityListener {
 								amount = a;
 							}
 						}
-						m.getMethod().getAccount(p.getName()).subtract(amount);
+						m.getAccount(p.getName()).subtract(amount);
 					}
 					else {
 						double a = Math.abs(dropAmount) * Settings.getDropValue();
 						if(balance > a) {
-							m.getMethod().getAccount(p.getName()).set(a);
+							m.getAccount(p.getName()).set(a);
 							amount = balance - a;
 						}
 					}
@@ -123,8 +126,7 @@ public class MDEntityListener extends EntityListener {
 						dropListMonnies(event.getDrops(), (int)(amount / Settings.getDropValue()));
 					}
 				}
-			}
-		}else{
+		} else {
 			if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent){
 				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent)event.getEntity().getLastDamageCause();
 				LivingEntity attacker;
@@ -171,11 +173,6 @@ public class MDEntityListener extends EntityListener {
 					else if(event.getEntity() instanceof Giant) {
 						if(Math.random() < Settings.getGiantDropFreq()) {
 							mobDrop(event, Settings.getGiantDropMin(), Settings.getGiantDropMax());
-						}
-					}
-					else if(event.getEntity() instanceof HumanEntity) {
-						if(Math.random() < Settings.getHumanDropFreq()) {
-							mobDrop(event, Settings.getHumanDropMin(), Settings.getHumanDropMax());
 						}
 					}
 					else if(event.getEntity() instanceof Pig) {
@@ -299,12 +296,7 @@ public class MDEntityListener extends EntityListener {
 		if(amount <= 0) {
 			return;
 		}
-		Material mat = Material.getMaterial(Settings.getMaterialID());
-		if(mat == null) {
-			System.err.println("[MoneyDrop] Material not found, please check your Dropped-Material-ID setting.");
-			return;
-		}
-		int stack = mat.getMaxStackSize();
+		int stack = Material.getMaterial(Settings.getMaterialID()).getMaxStackSize();
 		int loops = amount / stack;
 		if(amount % stack != 0) {
 			loops++;
@@ -324,12 +316,7 @@ public class MDEntityListener extends EntityListener {
 		if(amount <= 0) {
 			return;
 		}
-		Material mat = Material.getMaterial(Settings.getMaterialID());
-		if(mat == null) {
-			System.err.println("[MoneyDrop] Material not found, please check your Dropped-Material-ID setting.");
-			return;
-		}
-		int stack = mat.getMaxStackSize();
+		int stack = Material.getMaterial(Settings.getMaterialID()).getMaxStackSize();
 		int loops = amount / stack;
 		if(amount % stack != 0) {
 			loops++;
